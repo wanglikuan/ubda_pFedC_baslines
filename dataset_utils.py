@@ -1,5 +1,5 @@
 import os
-import ujson
+import json
 import numpy as np
 import gc
 from sklearn.model_selection import train_test_split
@@ -15,7 +15,7 @@ def check(config_path, train_path, test_path, num_clients, num_labels, niid=Fals
     # check existing dataset
     if os.path.exists(config_path):
         with open(config_path, 'r') as f:
-            config = ujson.load(f)
+            config = json.load(f)
         if config['num_clients'] == num_clients and \
             config['num_labels'] == num_labels and \
             config['non_iid'] == niid and \
@@ -161,68 +161,68 @@ def split_data(X, y, train_size=train_size):
             X_train, X_test, y_train, y_test = train_test_split(
                 X[i], y[i], train_size=train_size, shuffle=True, stratify=None)
 
-            # re-label ########################################################################
-            length = len(y_train)
-            multi_label_0_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_1_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_2_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_3_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_4_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_5_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_6_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_7_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_8_train = np.zeros((1 * length), dtype=np.long)
-            multi_label_9_train = np.zeros((1 * length), dtype=np.long)
-            for label_idx in range(len(y_train)):
-                for class_idx in range(args.n_class):
-                    if class_idx == y_train[label_idx]:
-                        locals()['multi_label_' + str(class_idx)][label_idx] = 1
-                    else:
-                        locals()['multi_label_' + str(class_idx)][label_idx] = 0
-            multi_y_train = []
-            # multi_y.append(locals()['multi_label_' + str(class_idx)] for class_idx in range(args.n_class))
-            multi_y_train.append(multi_label_0_train)
-            multi_y_train.append(multi_label_1_train)
-            multi_y_train.append(multi_label_2_train)
-            multi_y_train.append(multi_label_3_train)
-            multi_y_train.append(multi_label_4_train)
-            multi_y_train.append(multi_label_5_train)
-            multi_y_train.append(multi_label_6_train)
-            multi_y_train.append(multi_label_7_train)
-            multi_y_train.append(multi_label_8_train)
-            multi_y_train.append(multi_label_9_train)
-            ####################################################################################
-            # re-label ########################################################################
-            length = len(y_test)
-            multi_label_0_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_1_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_2_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_3_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_4_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_5_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_6_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_7_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_8_test = np.zeros((1 * length), dtype=np.long)
-            multi_label_9_test = np.zeros((1 * length), dtype=np.long)
-            for label_idx in range(len(y_test)):
-                for class_idx in range(args.n_class):
-                    if class_idx == y_test[label_idx]:
-                        locals()['multi_label_' + str(class_idx)][label_idx] = 1
-                    else:
-                        locals()['multi_label_' + str(class_idx)][label_idx] = 0
-            multi_y_test = []
-            # multi_y.append(locals()['multi_label_' + str(class_idx)] for class_idx in range(args.n_class))
-            multi_y_test.append(multi_label_0_test)
-            multi_y_test.append(multi_label_1_test)
-            multi_y_test.append(multi_label_2_test)
-            multi_y_test.append(multi_label_3_test)
-            multi_y_test.append(multi_label_4_test)
-            multi_y_test.append(multi_label_5_test)
-            multi_y_test.append(multi_label_6_test)
-            multi_y_test.append(multi_label_7_test)
-            multi_y_test.append(multi_label_8_test)
-            multi_y_test.append(multi_label_9_test)
-            ####################################################################################
+        # re-label ########################################################################
+        length = len(y_train)
+        multi_label_0_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_1_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_2_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_3_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_4_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_5_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_6_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_7_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_8_train = np.zeros((1 * length), dtype=np.long)
+        multi_label_9_train = np.zeros((1 * length), dtype=np.long)
+        for label_idx in range(len(y_train)):
+            for class_idx in range(args.n_class):
+                if class_idx == y_train[label_idx]:
+                    locals()['multi_label_' + str(class_idx)][label_idx] = 1
+                else:
+                    locals()['multi_label_' + str(class_idx)][label_idx] = 0
+        multi_y_train = []
+        # multi_y.append(locals()['multi_label_' + str(class_idx)] for class_idx in range(args.n_class))
+        multi_y_train.append(multi_label_0_train)
+        multi_y_train.append(multi_label_1_train)
+        multi_y_train.append(multi_label_2_train)
+        multi_y_train.append(multi_label_3_train)
+        multi_y_train.append(multi_label_4_train)
+        multi_y_train.append(multi_label_5_train)
+        multi_y_train.append(multi_label_6_train)
+        multi_y_train.append(multi_label_7_train)
+        multi_y_train.append(multi_label_8_train)
+        multi_y_train.append(multi_label_9_train)
+        ####################################################################################
+        # re-label ########################################################################
+        length = len(y_test)
+        multi_label_0_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_1_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_2_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_3_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_4_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_5_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_6_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_7_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_8_test = np.zeros((1 * length), dtype=np.long)
+        multi_label_9_test = np.zeros((1 * length), dtype=np.long)
+        for label_idx in range(len(y_test)):
+            for class_idx in range(args.n_class):
+                if class_idx == y_test[label_idx]:
+                    locals()['multi_label_' + str(class_idx)][label_idx] = 1
+                else:
+                    locals()['multi_label_' + str(class_idx)][label_idx] = 0
+        multi_y_test = []
+        # multi_y.append(locals()['multi_label_' + str(class_idx)] for class_idx in range(args.n_class))
+        multi_y_test.append(multi_label_0_test)
+        multi_y_test.append(multi_label_1_test)
+        multi_y_test.append(multi_label_2_test)
+        multi_y_test.append(multi_label_3_test)
+        multi_y_test.append(multi_label_4_test)
+        multi_y_test.append(multi_label_5_test)
+        multi_y_test.append(multi_label_6_test)
+        multi_y_test.append(multi_label_7_test)
+        multi_y_test.append(multi_label_8_test)
+        multi_y_test.append(multi_label_9_test)
+        ####################################################################################
         #train_data.append({'x': X_train, 'y': y_train})
         train_data.append({'x': X_train, 'y': multi_y_train})
         num_samples['train'].append(len(y_train))
@@ -254,11 +254,11 @@ def save_file(config_path, train_path, test_path, train_data, test_data, num_cli
 
     for idx, train_dict in enumerate(train_data):
         with open(train_path[:-5] + str(idx)  + '_' + '.json', 'w') as f:
-            ujson.dump(train_dict, f)
+            json.dump(train_dict, f)
     for idx, test_dict in enumerate(test_data):
         with open(test_path[:-5] + str(idx)  + '_' + '.json', 'w') as f:
-            ujson.dump(test_dict, f)
+            json.dump(test_dict, f)
     with open(config_path, 'w') as f:
-        ujson.dump(config, f)
+        json.dump(config, f)
 
     print("Finish generating dataset.\n")
