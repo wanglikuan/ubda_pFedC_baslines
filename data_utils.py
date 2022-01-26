@@ -61,8 +61,8 @@ def get_batch_sample(data, batch_size):
 
 
 def read_data(dataset, idx):
-    train_data_dir = os.path.join('../dataset', dataset, 'train/')
-    test_data_dir = os.path.join('../dataset', dataset, 'test/')
+    train_data_dir = os.path.join('dataset', dataset, 'train/')
+    test_data_dir = os.path.join('dataset', dataset, 'test/')
 
     print("use dataset: ",dataset)
 
@@ -77,7 +77,7 @@ def read_data(dataset, idx):
     return train_data, test_data
 
 
-def read_client_data(dataset, idx):
+def read_client_data(dataset, idx): #read multidata
     if dataset[-4:] == "news":
         return read_client_data_text(dataset, idx)
 
@@ -87,8 +87,17 @@ def read_client_data(dataset, idx):
     X_test = torch.Tensor(test_data['x']).type(torch.float32)
     y_test = torch.Tensor(test_data['y']).type(torch.int64)
 
-    train_data = [(x, y) for x, y in zip(X_train, y_train)]
-    test_data = [(x, y) for x, y in zip(X_test, y_test)]
+    train_data = []
+    for i in range(len(X_train)):
+        multi_y = torch.tensor([])
+        train_data.append((X_train[i], y_train[:, i].view(1,len(y_train))))    
+
+    test_data = []
+    for i in range(len(X_test)):
+        test_data.append((X_test[i], y_test[:, i].view(1,len(y_train))))
+
+    #train_data = [(x, y) for x, y in zip(X_train, y_train)]
+    #test_data = [(x, y) for x, y in zip(X_test, y_test)]
     return train_data, test_data
 
 
